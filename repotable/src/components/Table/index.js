@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react'
 import { useQuery } from '@apollo/client/react';
 import { useTable, usePagination } from 'react-table'
 import { repoQuery } from './queries'
-// import PropTypes from 'proptypes'
 
 const columns = [{
 	Header: 'name',
@@ -15,7 +14,7 @@ const columns = [{
 	accessor: 'forks'
 }]
 
-export const Repotable = ({ repos }) => {
+export const Repotable = () => {
 	const [pageIndex, setPageIndex] = useState(0)
 	const { data, loading, error} = useQuery(repoQuery)
 
