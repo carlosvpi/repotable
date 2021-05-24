@@ -1,17 +1,23 @@
 import gql from 'graphql-tag'
 
 export const repoQuery = gql`
-query RepoQuery ($name: String!, $owner: String!) {
-	repository(name: $name, owner: $owner) {
-		name
-		description
-		forks {
+query RepoQuery {
+	viewer {
+		repositories (first: 10) {
 			totalCount
+			nodes {
+				name
+				description
+				forks {
+					totalCount
+				}
+				stargazers {
+					totalCount
+				}
+				url
+
+			}
 		}
-		stargazers {
-			totalCount
-		}
-		url
 	}
 }
 `

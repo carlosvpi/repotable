@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useQuery } from '@apollo/client/react';
-import { useTable } from 'react-table'
+import { useTable, usePagination } from 'react-table'
 import { repoQuery } from './queries'
 // import PropTypes from 'proptypes'
 
 const columns = [{
 	Header: 'name',
-	Cell: ({ row }) => (console.log(row.original), <a target='_black' href={ row.original.url }>{ row.original.name  }</a>)
+	Cell: ({ row }) => <a target='_black' href={ row.original.url }>{ row.original.name  }</a>
 }, {
 	Header: 'Stars',
 	accessor: 'stars'
@@ -16,39 +16,49 @@ const columns = [{
 }]
 
 export const Repotable = ({ repos }) => {
-	const { data, loading, error} = useQuery(repoQuery, { variables: repos[0] })
+	const [pageIndex, setPageIndex] = useState(0)
+	const { data, loading, error} = useQuery(repoQuery)
 
-	const tableData = [
-		{
-			name: data?.repository?.name ?? '',
-			stars: data?.repository?.stargazers?.totalCount ?? 0,
-			forks: data?.repository?.forks?.totalCount ?? 0,
-			url: data?.repository?.url ?? '',
-			description: data?.repository?.description ?? ''
-		}
-	]
+	const tableData = useMemo(() => data?.viewer?.repositories?.nodes?.map?.(({ url, name, stargazers, forks, description }) => ({
+		name,
+		stars: stargazers?.totalCount ?? 0,
+		forks: forks?.totalCount ?? 0,
+		url,
+		description
+	})) ?? [], [data])
 
 	const {
 		getTableProps,
 		getTableBodyProps,
 		headerGroups,
 		rows,
-		prepareRow
+		prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageSize },
 	} = useTable({
 		columns,
-		data: tableData
-	})
+		data: tableData,
+		initialState: { pageIndex }
+	}, usePagination)
 
 	if (error) {
-		return <strong>{ error }</strong>
+		return <strong>{ JSON.stringify(error) }</strong>
 	}
 
 	if (loading) {
 		return <em>Loading</em>
 	}
 
-
-	return <table {...getTableProps()}>
+	return <>
+		<table {...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
@@ -71,6 +81,51 @@ export const Repotable = ({ repos }) => {
         })}
       </tbody>
     </table>
+    <div className="pagination">
+      <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+        {'<<'}
+      </button>{' '}
+      <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+        {'<'}
+      </button>{' '}
+      <button onClick={() => nextPage()} disabled={!canNextPage}>
+        {'>'}
+      </button>{' '}
+      <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+        {'>>'}
+      </button>{' '}
+      <span>
+        Page{' '}
+        <strong>
+          {pageIndex + 1} of {pageOptions.length}
+        </strong>{' '}
+      </span>
+      <span>
+        | Go to page:{' '}
+        <input
+          type="number"
+          defaultValue={pageIndex + 1}
+          onChange={e => {
+            const page = e.target.value ? Number(e.target.value) - 1 : 0
+            gotoPage(page)
+          }}
+          style={{ width: '100px' }}
+        />
+      </span>{' '}
+      <select
+        value={pageSize}
+        onChange={e => {
+          setPageSize(Number(e.target.value))
+        }}
+      >
+        {[10, 20, 30, 40, 50].map(pageSize => (
+          <option key={pageSize} value={pageSize}>
+            Show {pageSize}
+          </option>
+        ))}
+      </select>
+    </div>
+  </>
 }
 
 // Repotable.propTypes
