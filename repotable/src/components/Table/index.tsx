@@ -2,8 +2,9 @@ import React, { useState, useMemo } from 'react'
 import { useQuery } from '@apollo/client/react';
 import { useTable, usePagination } from 'react-table'
 import { repoQuery } from './queries'
+import { Pagination } from '../Pagination'
 
-interface RowProps2 {
+interface RowProps {
   row: {
     original: {
       url: string,
@@ -12,9 +13,9 @@ interface RowProps2 {
   }
 }
 
-const columns: Array<Column> = [{
+const columns: Array<any> = [{
 	Header: 'name',
-	Cell: ({ row }) => <a target='_black' href={ row.original.url }>{ row.original.name  }</a>
+	Cell: ({ row }: RowProps) => <a target='_black' href={ row.original.url }>{ row.original.name  }</a>
 }, {
 	Header: 'Stars',
 	accessor: 'stars'
@@ -39,7 +40,6 @@ export const Repotable = () => {
 		description
 	})) ?? [], [data])
 
-	// @ts-ignore
   const {
 		getTableProps,
 		getTableBodyProps,
@@ -94,50 +94,18 @@ export const Repotable = () => {
         })}
       </tbody>
     </table>
-    <div className="pagination">
-      <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-        {'<<'}
-      </button>{' '}
-      <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-        {'<'}
-      </button>{' '}
-      <button onClick={() => nextPage()} disabled={!canNextPage}>
-        {'>'}
-      </button>{' '}
-      <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-        {'>>'}
-      </button>{' '}
-      <span>
-        Page{' '}
-        <strong>
-          {pageIndex + 1} of {pageOptions.length}
-        </strong>{' '}
-      </span>
-      <span>
-        | Go to page:{' '}
-        <input
-          type="number"
-          defaultValue={pageIndex + 1}
-          onChange={e => {
-            const page = e.target.value ? Number(e.target.value) - 1 : 0
-            gotoPage(page)
-          }}
-          style={{ width: '100px' }}
-        />
-      </span>{' '}
-      <select
-        value={pageSize}
-        onChange={e => {
-          setPageSize(Number(e.target.value))
-        }}
-      >
-        {[10, 20, 30, 40, 50].map(pageSize => (
-          <option key={pageSize} value={pageSize}>
-            Show {pageSize}
-          </option>
-        ))}
-      </select>
-    </div>
+    <Pagination
+      gotoPage={ gotoPage }
+      canPreviousPage={ canPreviousPage }
+      canNextPage={ canNextPage }
+      previousPage={ previousPage }
+      nextPage={ nextPage }
+      pageIndex={ pageIndex }
+      pageOptions={ pageOptions }
+      pageSize={ pageSize }
+      setPageSize={ setPageSize }
+      pageCount={ pageCount }
+    />
   </>
 }
 
