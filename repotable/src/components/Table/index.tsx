@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client/react';
 import { useTable, usePagination } from 'react-table'
 import { repoQuery } from './queries'
 import { Pagination } from '../Pagination'
+import { Table } from '../../styledComponents/Table'
 
 interface RowProps {
   row: {
@@ -71,7 +72,7 @@ export const Repotable = () => {
 	}
 
 	return <>
-		<table {...getTableProps()}>
+		<Table {...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
@@ -93,7 +94,7 @@ export const Repotable = () => {
           )
         })}
       </tbody>
-    </table>
+    </Table>
     <Pagination
       gotoPage={ gotoPage }
       canPreviousPage={ canPreviousPage }
