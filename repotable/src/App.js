@@ -1,9 +1,10 @@
-import logo from './logo.svg'
+import React from 'react'
 import { HttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
-import { Repotable } from './components/Table'
+// import { Table } from './components/Table/index.tsx'
+import { Repotable } from './dataComponents/Repos'
 import './App.css'
 
 const authLink = setContext((_, { headers }) => {
@@ -20,7 +21,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-const token = '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'
+const token = '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'
 
 
 function App() {
