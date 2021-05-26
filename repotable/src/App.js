@@ -3,7 +3,7 @@ import { HttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
-import { Repotable } from './components/Table'
+import { Repotable } from './components/Table/index.tsx'
 import './App.css'
 
 const authLink = setContext((_, { headers }) => {

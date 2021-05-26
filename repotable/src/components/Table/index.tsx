@@ -3,7 +3,16 @@ import { useQuery } from '@apollo/client/react';
 import { useTable, usePagination } from 'react-table'
 import { repoQuery } from './queries'
 
-const columns = [{
+interface RowProps2 {
+  row: {
+    original: {
+      url: string,
+      name: string
+    }
+  }
+}
+
+const columns: Array<Column> = [{
 	Header: 'name',
 	Cell: ({ row }) => <a target='_black' href={ row.original.url }>{ row.original.name  }</a>
 }, {
@@ -14,11 +23,15 @@ const columns = [{
 	accessor: 'forks'
 }]
 
+interface countable {
+  totalCount: number
+}
+
 export const Repotable = () => {
 	const [pageIndex, setPageIndex] = useState(0)
 	const { data, loading, error} = useQuery(repoQuery)
 
-	const tableData = useMemo(() => data?.viewer?.repositories?.nodes?.map?.(({ url, name, stargazers, forks, description }) => ({
+	const tableData = useMemo(() => data?.viewer?.repositories?.nodes?.map?.(({ url, name, stargazers, forks, description }: { url: string, name: string, stargazers: countable, forks: countable, description: string }) => ({
 		name,
 		stars: stargazers?.totalCount ?? 0,
 		forks: forks?.totalCount ?? 0,
@@ -26,7 +39,8 @@ export const Repotable = () => {
 		description
 	})) ?? [], [data])
 
-	const {
+	// @ts-ignore
+  const {
 		getTableProps,
 		getTableBodyProps,
 		headerGroups,
