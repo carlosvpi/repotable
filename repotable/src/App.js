@@ -1,9 +1,10 @@
-import logo from './logo.svg'
+import React from 'react'
 import { HttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
-import { Repotable } from './components/Table/index.tsx'
+// import { Table } from './components/Table/index.tsx'
+import { Repotable } from './dataComponents/Repos'
 import './App.css'
 
 const authLink = setContext((_, { headers }) => {

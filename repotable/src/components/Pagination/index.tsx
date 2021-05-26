@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 interface PaginationProps {
   gotoPage: any,
@@ -69,4 +70,17 @@ export const Pagination : React.FC<PaginationProps> = ({
       ))}
     </select>
   </div>
+}
+
+Pagination.propTypes = {
+  gotoPage: PropTypes.any.isRequired,
+  canPreviousPage: PropTypes.any.isRequired,
+  previousPage: PropTypes.any.isRequired,
+  nextPage: PropTypes.any.isRequired,
+  canNextPage: PropTypes.any.isRequired,
+  pageIndex: PropTypes.any.isRequired,
+  pageOptions: PropTypes.any.isRequired,
+  pageSize: PropTypes.any.isRequired,
+  pageCount: PropTypes.any.isRequired,
+  setPageSize: PropTypes.any.isRequired
 }
