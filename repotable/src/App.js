@@ -21,7 +21,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-const token = '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'
+const token = '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'
 
 
 function App() {

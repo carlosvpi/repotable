@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { useQuery } from '@apollo/client/react';
 import { useTable, usePagination } from 'react-table'
-import { repoQuery } from './queries'
+import { repoQuery } from '../../graphql/queries/repos'
 import { Pagination } from '../../components/Pagination'
 import { Table } from '../../components/Table'
 
