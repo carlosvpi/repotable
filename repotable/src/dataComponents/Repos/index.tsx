@@ -38,12 +38,14 @@ interface countable {
   totalCount: number
 }
 
+const mockData = {"viewer":{"repositories":{"totalCount":32,"nodes":[{"name":"aleph","description":"Grammar npm module","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/aleph","__typename":"Repository"},{"name":"abjad","description":null,"forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/abjad","__typename":"Repository"},{"name":"beeper","description":null,"forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/beeper","__typename":"Repository"},{"name":"vtr","description":"Small d2 algebra module","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/vtr","__typename":"Repository"},{"name":"futl","description":"Functional library full of utilities","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/futl","__typename":"Repository"},{"name":"neuret","description":null,"forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/neuret","__typename":"Repository"},{"name":"trinity-backend","description":"Spark app as a server","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/trinity-backend","__typename":"Repository"},{"name":"trinity-frontend","description":"Single page application","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/trinity-frontend","__typename":"Repository"},{"name":"ldab-frontend","description":"Front-end for ldab","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/ldab-frontend","__typename":"Repository"},{"name":"ldab-backend","description":"Server for ldab","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/ldab-backend","__typename":"Repository"}],"__typename":"RepositoryConnection"},"__typename":"User"}}
+
 export const Repotable = () => {
   const [filter, setFilter] = useState('')
 	const { data: trueData, loading, error} = useQuery(repoQuery)
 
   const data = error
-    ? {"data":{"viewer":{"repositories":{"totalCount":32,"nodes":[{"name":"aleph","description":"Grammar npm module","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/aleph","__typename":"Repository"},{"name":"abjad","description":null,"forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/abjad","__typename":"Repository"},{"name":"beeper","description":null,"forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/beeper","__typename":"Repository"},{"name":"vtr","description":"Small d2 algebra module","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/vtr","__typename":"Repository"},{"name":"futl","description":"Functional library full of utilities","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/futl","__typename":"Repository"},{"name":"neuret","description":null,"forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/neuret","__typename":"Repository"},{"name":"trinity-backend","description":"Spark app as a server","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/trinity-backend","__typename":"Repository"},{"name":"trinity-frontend","description":"Single page application","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/trinity-frontend","__typename":"Repository"},{"name":"ldab-frontend","description":"Front-end for ldab","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/ldab-frontend","__typename":"Repository"},{"name":"ldab-backend","description":"Server for ldab","forks":{"totalCount":0,"__typename":"RepositoryConnection"},"stargazers":{"totalCount":0,"__typename":"StargazerConnection"},"url":"https://github.com/carlosvpi/ldab-backend","__typename":"Repository"}],"__typename":"RepositoryConnection"},"__typename":"User"}}}
+    ? mockData
     : trueData
 
   const nodes = data?.viewer?.repositories?.nodes ?? []
@@ -80,7 +82,7 @@ export const Repotable = () => {
 	}, usePagination)
 
 	if (error) {
-		console.error(error)
+		console.warn(error)
 	}
 
 	if (loading) {
@@ -138,5 +140,3 @@ export const Repotable = () => {
     </Container>
   </>
 }
-
-// Repotable.propTypes
