@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Table as StyledTable } from '../../styledComponents/Table'
 
 interface TableProps {
   tableProps: object,
@@ -15,14 +14,14 @@ export const Table: React.FC<TableProps> = ({
   tableBodyProps,
   rows
 }) => {
-	return <StyledTable {...tableProps}>
+	return <table {...tableProps}>
     <thead>
       {headers}
     </thead>
     <tbody {...tableBodyProps}>
       {rows}
     </tbody>
-  </StyledTable>
+  </table>
 }
 
 Table.propTypes = {

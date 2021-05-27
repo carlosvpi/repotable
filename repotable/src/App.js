@@ -4,6 +4,7 @@ import { setContext } from 'apollo-link-context'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
 import { Repotable } from './dataComponents/Repos'
+import { StyledApp } from './styledComponents/StyledApp'
 import './App.css'
 
 const authLink = setContext((_, { headers }) => {
@@ -20,18 +21,18 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-const token = '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'
+const token = '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'
 
 
 function App() {
   return (
     <ApolloProvider client={ client }>
-      <div className="App">
+      <StyledApp>
         <Repotable repos={[{
           name: 'repotable',
           owner: 'carlosvpi'
         }]}/>
-      </div>
+      </StyledApp>
     </ApolloProvider>
   )
 }
