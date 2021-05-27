@@ -3,7 +3,6 @@ import { HttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
-// import { Table } from './components/Table/index.tsx'
 import { Repotable } from './dataComponents/Repos'
 import './App.css'
 
@@ -21,7 +20,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-const token = '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'
+const token = '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'
 
 
 function App() {

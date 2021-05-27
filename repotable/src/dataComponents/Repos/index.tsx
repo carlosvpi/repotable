@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useQuery } from '@apollo/client/react';
 import { useTable, usePagination } from 'react-table'
 import { repoQuery } from '../../graphql/queries/repos'
 import { Pagination } from '../../components/Pagination'
 import { Table } from '../../components/Table'
 
-interface RowProps {
+interface ReactTableRowType {
   row: {
     original: {
       url: string,
@@ -14,9 +14,17 @@ interface RowProps {
   }
 }
 
+interface RowType {
+  url: string,
+  name: string,
+  stargazers: countable,
+  forks: countable,
+  description: string
+}
+
 const columns: Array<any> = [{
 	Header: 'name',
-	Cell: function Cell ({ row }: RowProps) { return <a target='_black' href={ row.original.url }>{ row.original.name  }</a> }
+	Cell: function Cell ({ row }: ReactTableRowType) { return <a target='_black' href={ row.original.url }>{ row.original.name  }</a> }
 }, {
 	Header: 'Stars',
 	accessor: 'stars'
@@ -30,15 +38,20 @@ interface countable {
 }
 
 export const Repotable = () => {
+  const [filter, setFilter] = useState('')
 	const { data, loading, error} = useQuery(repoQuery)
 
-	const tableData = useMemo(() => data?.viewer?.repositories?.nodes?.map?.(({ url, name, stargazers, forks, description }: { url: string, name: string, stargazers: countable, forks: countable, description: string }) => ({
+  const nodes = data?.viewer?.repositories?.nodes ?? []
+  const filteredNodes = filter
+    ? nodes.filter(({ name }: RowType) => !!name.match(filter))
+    : nodes
+	const tableData = useMemo(() => filteredNodes.map(({ url, name, stargazers, forks, description }: RowType) => ({
 		name,
 		stars: stargazers?.totalCount ?? 0,
 		forks: forks?.totalCount ?? 0,
 		url,
 		description
-	})) ?? [], [data])
+	})) ?? [], [data, filter])
 
   const {
 		getTableProps,
@@ -70,6 +83,9 @@ export const Repotable = () => {
 	}
 
 	return <>
+    <input placeholder='Filter by name' onChange={ ({ target }) => {
+      setFilter(target.value)
+    } } />
 		<Table
       tableProps={ getTableProps() }
       headers={ headerGroups.map((headerGroup, i) => (
